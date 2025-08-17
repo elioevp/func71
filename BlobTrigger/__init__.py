@@ -15,8 +15,6 @@ from azure.core.credentials import AzureKeyCredential
 from azure.cosmos import CosmosClient, PartitionKey
 # --- FIN IMPORTACIONES NECESARIAS ---
 
-blueprint = func.Blueprint()
-
 # --- FUNCIÓN AUXILIAR PARA OBTENER USERNAME DE MYSQL ---
 def get_username_from_db(user_id):
     """
@@ -107,9 +105,7 @@ def get_field_confidence(field):
         return None
     return field.confidence if hasattr(field, 'confidence') else None
 
-@blueprint.blob_trigger(arg_name="myblob", path="%BLOB_CONTAINER_NAME%/{id}/{random_subdirectory}/{name}",
-                        connection="AzureWebJobsStorage")
-def event_grid_blob_trigger(myblob: func.InputStream):
+def main(myblob: func.InputStream):
     logging.info("--- FUNCTION STARTED ---")
 
     # Ignorar archivos placeholder para evitar procesamiento innecesario
